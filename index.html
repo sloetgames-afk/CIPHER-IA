@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sloet Games™ - Colaboración y Contratación</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <header>
+            <div class="header-content">
+                <img src="sgames.png" alt="Sloet Games Logo" class="top-logo">
+                <div class="titles">
+                    <h1>Sloet Games™</h1>
+                    <p class="subtitle">Formulario Oficial de Colaboración</p>
+                </div>
+            </div>
+            <div class="update-bar">
+                Abierto para postulaciones 2026
+            </div>
+        </header>
+
+        <main>
+            <form action="#" method="POST" class="game-form">
+                
+                <section>
+                    <h2>1. DATOS GENERALES DEL SOLICITANTE</h2>
+                    <p class="warning-text">Nota: Toda la información debe ser verídica. La falsificación de datos resultará en el rechazo inmediato de la solicitud.</p>
+                    
+                    <div class="form-group">
+                        <label for="nombre">Nombre completo:</label>
+                        <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre real">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="discord-user">Nombre de usuario (Discord):</label>
+                        <input type="text" id="discord-user" name="discord-user" required placeholder="ejemplo#0000 o usuario">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="discord-id">ID de Discord:</label>
+                        <input type="text" id="discord-id" name="discord-id" required placeholder="Ej: 123456789012345678">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Correo electrónico activo:</label>
+                        <input type="email" id="email" name="email" required placeholder="correo@ejemplo.com">
+                    </div>
+
+                    <div class="form-group two-col">
+                        <div>
+                            <label for="pais">País de residencia:</label>
+                            <input type="text" id="pais" name="pais" required>
+                        </div>
+                        <div>
+                            <label for="edad">Edad (mínimo 17 años):</label>
+                            <input type="number" id="edad" name="edad" min="17" required>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>2. ÁREA DE INTERÉS</h2>
+                    <p>Seleccione una o más áreas en las que desea colaborar:</p>
+                    
+                    <div class="checkbox-group">
+                        <label class="check-item"><input type="checkbox" name="area" value="soporte"> Soporte técnico (usuarios / videojuegos)</label>
+                        <label class="check-item"><input type="checkbox" name="area" value="moderacion"> Moderación de comunidades</label>
+                        <label class="check-item"><input type="checkbox" name="area" value="desarrollo"> Desarrollo (programación, bots, web, backend)</label>
+                        <label class="check-item"><input type="checkbox" name="area" value="diseno"> Diseño gráfico / Modelado 3D</label>
+                        <label class="check-item"><input type="checkbox" name="area" value="cm"> Gestión de comunidad / Eventos</label>
+                        <label class="check-item"><input type="checkbox" name="area" value="qa"> QA / Testing</label>
+                        <label class="check-item"><input type="checkbox" name="area" value="ai"> Inteligencia Artificial / Automatización</label>
+                        <label class="check-item"><input type="checkbox" name="area" value="marketing"> Marketing / Contenido / Redes sociales</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="porque-area">Explique brevemente por qué considera que encaja en esta área:</label>
+                        <textarea id="porque-area" name="porque-area" rows="3" required></textarea>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>3. EXPERIENCIA Y CONOCIMIENTOS</h2>
+                    
+                    <div class="form-group">
+                        <label>¿Cuenta con experiencia previa?</label>
+                        <select id="experiencia-bool" name="experiencia-bool">
+                            <option value="no">No</option>
+                            <option value="si">Sí</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="anos-exp">Años de experiencia (si aplica):</label>
+                        <input type="text" id="anos-exp" name="anos-exp">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="proyectos-previos">Proyectos, comunidades o empresas anteriores:</label>
+                        <textarea id="proyectos-previos" name="proyectos-previos" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="herramientas">Herramientas y tecnologías que domina (Ej: Node.js, Blender, Unity, etc.):</label>
+                        <input type="text" id="herramientas" name="herramientas">
+                    </div>
+                </section>
+
+                <section>
+                    <h2>4. DISPONIBILIDAD</h2>
+                    
+                    <div class="form-group">
+                        <label for="horas-semanales">Disponibilidad semanal aproximada:</label>
+                        <select id="horas-semanales" name="horas-semanales">
+                            <option value="5-10">5–10 horas</option>
+                            <option value="10-20">10–20 horas</option>
+                            <option value="20+">20+ horas</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="horario">Horario preferido:</label>
+                        <select id="horario" name="horario">
+                            <option value="flexible">Flexible</option>
+                            <option value="manana">Mañana</option>
+                            <option value="tarde">Tarde</option>
+                            <option value="noche">Noche</option>
+                        </select>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>5. MODALIDAD DE COLABORACIÓN</h2>
+                    <p>Sloet Games™ se encuentra en una etapa de crecimiento. Algunos roles pueden iniciar sin pago inmediato y escalar a esquemas remunerados.</p>
+                    
+                    <div class="form-group">
+                        <label for="modalidad">Modalidad aplicable:</label>
+                        <select id="modalidad" name="modalidad">
+                            <option value="remoto">Trabajo remoto</option>
+                            <option value="voluntario">Colaboración voluntaria inicial</option>
+                            <option value="proyecto">Contrato por proyecto</option>
+                            <option value="futuro">Remuneración futura sujeta a ingresos</option>
+                        </select>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>6. PAGOS Y COMPENSACIÓN</h2>
+                    <p>Seleccione sus métodos de pago disponibles (cuando aplique):</p>
+                    
+                    <div class="checkbox-group">
+                        <label class="check-item"><input type="checkbox" name="pago" value="paypal"> PayPal</label>
+                        <label class="check-item"><input type="checkbox" name="pago" value="banco"> Transferencia bancaria</label>
+                        <label class="check-item"><input type="checkbox" name="pago" value="otro"> Otros</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expectativa">Expectativa de compensación (opcional):</label>
+                        <input type="text" id="expectativa" name="expectativa">
+                    </div>
+                </section>
+
+                <section>
+                    <h2>7. CONFIDENCIALIDAD Y PROPIEDAD INTELECTUAL</h2>
+                    <div class="legal-box">
+                        <ul>
+                            <li>Toda la información interna es confidencial.</li>
+                            <li>No divulgará datos, sistemas, código, estrategias ni documentación interna.</li>
+                            <li>Cualquier filtración implicará expulsión inmediata y posibles acciones legales.</li>
+                            <li>Todo el trabajo realizado para Sloet Games™ será propiedad de la compañía, salvo acuerdo escrito previo.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <label class="check-item required-check">
+                            <input type="checkbox" name="acepto-confidencialidad" required>
+                            <strong>Acepto los términos de confidencialidad y uso.</strong>
+                        </label>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>8. DECLARACIÓN LEGAL Y RESPONSABILIDAD</h2>
+                    <div class="legal-box">
+                        <ul>
+                            <li>Declaro que soy mayor de 17 años.</li>
+                            <li>Asumo plena responsabilidad de mis acciones.</li>
+                            <li>Sloet Games™ puede aceptar o rechazar solicitudes sin obligación de justificación.</li>
+                            <li>Las condiciones pueden modificarse según el crecimiento del proyecto.</li>
+                        </ul>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="check-item required-check">
+                            <input type="checkbox" name="acepto-legal" required>
+                            <strong>Acepto la política legal y de responsabilidad.</strong>
+                        </label>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>9. PREGUNTA FINAL</h2>
+                    <div class="form-group">
+                        <label for="valor-agregado">¿Por qué desea formar parte de Sloet Games™ y qué valor considera que puede aportar al equipo?</label>
+                        <textarea id="valor-agregado" name="valor-agregado" rows="5" required></textarea>
+                    </div>
+                </section>
+
+                <div class="divider"></div>
+
+                <div class="legal-item">
+                    <p class="small-text">Confirmo que la información proporcionada es verdadera. Entiendo que este formulario no garantiza contratación inmediata.</p>
+                </div>
+
+                <button type="submit" class="submit-btn">ENVIAR SOLICITUD</button>
+
+            </form>
+        </main>
+
+        <div class="divider"></div>
+
+        <footer>
+            <div class="social-circles">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
+            <p class="copyright">© 2026 - Sloet Games™ Todos los derechos reservados</p>
+        </footer>
+    </div>
+
+</body>
+</html>
