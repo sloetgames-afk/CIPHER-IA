@@ -2,182 +2,35 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CIPHER IA™ - Panel de Control</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
+    <title>CIPHER IA</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="overlay" id="overlay"></div>
-
-    <aside id="sidebar">
-        <div class="sidebar-header">
-            <span class="close-sidebar-btn" id="closeSidebar">←</span>
-            <img src="cipheria.png" alt="Logo" onerror="this.src='https://via.placeholder.com/32/ffffff/000000?text=C'">
-            <span>CIPHER IA™</span>
+    <header>
+        <div class="logo-container">
+            <img src="cipheria.png" alt="Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('txt-logo').style.display='block'">
+            <div id="txt-logo" class="logo-text" style="display:none">CIPHER IA</div>
+            <div class="logo-text" id="main-title">CIPHER IA</div>
         </div>
+    </header>
 
-        <div class="menu-label">Sistemas</div>
-        
-        <ul class="nav-links">
-            <li class="nav-item active" onclick="showSection('panel-principal', this)">Panel Principal</li>
-            <li class="nav-item" onclick="showSection('comandos', this)">Comandos</li>
-            <li class="nav-item" onclick="showSection('consola', this)">Consola</li>
-            <li class="nav-item" onclick="showSection('premium', this)">Premium</li>
-            <li class="nav-item" onclick="showSection('info-bot', this)">Info Bot</li>
-        </ul>
+    <div id="chat-container">
+    </div>
 
-        <div class="footer-version">
-            2026 Sloet Games
-        </div>
-    </aside>
-
-    <main>
-        
-        <div class="top-header">
-            <div class="hamburger-btn" id="openSidebar">☰</div>
-
-            <img src="cipheria.png" alt="Logo Central" onerror="this.src='https://via.placeholder.com/45/000000/ffffff?text=C'">
-            <div style="text-align: center;">
-                <h1>CIPHER IA</h1>
-                <span id="page-subtitle">Panel Principal</span>
-            </div>
-        </div>
-
-        <div id="panel-principal" class="section active">
-            <button class="hero-btn">
-                <svg class="discord-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-                Añadir Servidor
+    <div class="input-area">
+        <div class="input-wrapper">
+            <textarea id="user-input" placeholder="Escribe un mensaje..." rows="1"></textarea>
+            <button id="send-btn">
+                <i class="fas fa-arrow-up"></i>
             </button>
-
-            <div class="info-block">
-                <h3>01. La Plataforma</h3>
-                <p>Desarrollado por <strong>Sloet Games™</strong>, CIPHER IA™ es un sistema unificado que integra comandos automáticos, mensajería asistida por IA y servicios de notificación en tiempo real.</p>
-            </div>
         </div>
-
-        <div id="comandos" class="section">
-            <div style="text-align:center; padding: 50px 20px; color:#777;">
-                <h3>Configuración de Comandos</h3>
-                <p>Seleccione un servidor para visualizar los comandos disponibles.</p>
-            </div>
-        </div>
-
-        <div id="consola" class="section">
-            <div class="grid-container">
-                <div class="card-console">
-                    <div class="toggle-switch"></div>
-                    <div class="card-title">Bienvenidas</div>
-                    <div class="card-desc">Dad la bienvenida a cada Usuario cuando se unen a tu servidor</div>
-                </div>
-                <div class="card-console">
-                    <div class="toggle-switch"></div>
-                    <div class="card-title">Salida</div>
-                    <div class="card-desc">Date cuenta de los usuarios que se salen de tu servidor</div>
-                </div>
-                <div class="card-console">
-                    <div class="toggle-switch"></div>
-                    <div class="card-title">Moderacion</div>
-                    <div class="card-desc">Modera tu servidor con mayor seguridad</div>
-                </div>
-                <div class="card-console">
-                    <div class="toggle-switch"></div>
-                    <div class="card-title">Sistema de Votos</div>
-                    <div class="card-desc">Añade canales de votos y 1 canal para los votos mas destacados</div>
-                </div>
-                <div class="card-console">
-                    <div class="toggle-switch"></div>
-                    <div class="card-title">Sistemas de Niveles</div>
-                    <div class="card-desc">Dad la bienvenida a cada Usuario cuando se unen a tu servidor</div>
-                </div>
-                <div class="card-console">
-                    <div class="toggle-switch"></div>
-                    <div class="card-title">Auto Roles</div>
-                    <div class="card-desc">Añade un rol automaticamente cada vez que un usuario se una a tu servidor</div>
-                </div>
-                <div class="card-console">
-                    <div class="toggle-switch"></div>
-                    <div class="card-title">Apodo del Bot</div>
-                    <div class="card-desc">Cambia el nombre al bot y la imagen de perfil</div>
-                </div>
-                <div class="card-console">
-                    <div class="toggle-switch"></div>
-                    <div class="card-title">C.Personalizados</div>
-                    <div class="card-desc">Añade comandos personalizados al bot</div>
-                </div>
-                 <div class="card-console">
-                    <div class="toggle-switch"></div>
-                    <div class="card-title">Anuncios</div>
-                    <div class="card-desc">Añade anuncios personalizados a tu servidor</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="premium" class="section">
-            <div class="pricing-grid">
-                
-                <div class="plan-card">
-                    <div class="plan-header">
-                        <h2>Free</h2>
-                        <span class="price">0.00/mes</span>
-                    </div>
-                    <ul class="feature-list">
-                        <li><span class="icon-check">✔</span> Asistente de IA DMs</li>
-                        <li><span class="icon-check">✔</span> Bienvenidas</li>
-                        <li><span class="icon-check">✔</span> Salidas</li>
-                        <li><span class="icon-check">✔</span> Moderacion</li>
-                        <li><span class="icon-cross">✖</span> Cambio de Apodo del Bot</li>
-                        <li><span class="icon-cross">✖</span> Comandos Personalizado</li>
-                        <li><span class="icon-cross">✖</span> Anuncios</li>
-                        <li><span class="icon-check">✔</span> Sistema de Votos</li>
-                        <li><span class="icon-cross">✖</span> Sistema de Niveles</li>
-                        <li><span class="icon-check">✔</span> Auto Roles</li>
-                    </ul>
-                </div>
-
-                <div class="plan-card">
-                    <div class="plan-header">
-                        <h2>Basic</h2>
-                        <span class="price">1.99/mes</span>
-                    </div>
-                    <ul class="feature-list">
-                        <li><span class="icon-check">✔</span> Asistente de IA DMs</li>
-                        <li><span class="icon-check">✔</span> Bienvenidas</li>
-                        <li><span class="icon-check">✔</span> Salidas</li>
-                        <li><span class="icon-check">✔</span> Moderacion</li>
-                        <li><span class="icon-cross">✖</span> Cambio de Apodo del Bot</li>
-                        <li><span class="icon-cross">✖</span> Comandos Personalizado</li>
-                        <li><span class="icon-check">✔</span> Anuncios</li>
-                        <li><span class="icon-check">✔</span> Sistema de Votos</li>
-                        <li><span class="icon-check">✔</span> Sistema de Niveles</li>
-                        <li><span class="icon-check">✔</span> Auto Roles</li>
-                    </ul>
-                </div>
-
-                <div class="plan-card pro">
-                    <div class="plan-header">
-                        <h2>Pro</h2>
-                        <span class="price">4.99/mes</span>
-                    </div>
-                    <ul class="feature-list">
-                        <li><span class="icon-check">✔</span> Asistente de IA DMs</li>
-                        <li><span class="icon-check">✔</span> Todas las funciones desbloqueadas</li>
-                        <li><span class="icon-check">✔</span> Soporte Prioritario</li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
-        
-        <div id="info-bot" class="section">
-            <div style="text-align:center; padding: 50px 20px;">
-                <h3>Información del Bot</h3>
-                <p>Versión actual: 2.4.0</p>
-                <p>Estado: En línea</p>
-            </div>
-        </div>
-
-    </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
