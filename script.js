@@ -1,7 +1,31 @@
 // --- CONFIGURACIÓN ---
-// Pega aquí la URL pública de tu servicio en Railway
-// Ejemplo: "https://mi-proyecto-cipher.up.railway.app/chat"
-const BACKEND_URL = "https://cipher-ia-production.up.railway.app"; 
+
+/**
+ * DETERMINACIÓN DE LA URL DEL BACKEND
+ * * Lógica:
+ * 1. Si el navegador está en 'localhost', asume que el backend está en el puerto 5000.
+ * 2. Si está en producción (Railway), usa una ruta relativa (si sirves el HTML desde el mismo server)
+ * o la URL completa de producción.
+ */
+
+// Define aquí la ruta de tu endpoint (ej: "/chat", "/api/message" o simplemente "/")
+const API_ENDPOINT = "/chat"; 
+
+let BACKEND_URL;
+
+if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    // Entorno Local: Apunta explícitamente al puerto 5000
+    BACKEND_URL = `http://localhost:5000${API_ENDPOINT}`;
+} else {
+    // Entorno Producción (Railway):
+    // Opción A: Si tu backend Node/Python SIRVE este archivo HTML, usa ruta relativa:
+    BACKEND_URL = API_ENDPOINT; 
+    
+    // Opción B: Si tu frontend está separado (ej: Vercel) y conecta al backend en Railway:
+    // BACKEND_URL = `https://cipher-ia-production.up.railway.app${API_ENDPOINT}`;
+}
+
+console.log("Conectando a:", BACKEND_URL);
 
 const chatContainer = document.getElementById('chat-container');
 const userInput = document.getElementById('user-input');
@@ -34,7 +58,7 @@ async function handleSend() {
     // UI del usuario
     addMessage(text, 'user');
     userInput.value = '';
-    userInput.style.height = 'auto'; // Reset altura
+    userInput.style.height = 'auto'; 
     isProcessing = true;
     sendBtn.disabled = true;
 
@@ -42,7 +66,7 @@ async function handleSend() {
     const loadingId = addLoading();
     scrollToBottom();
 
-    // Llamada a TU Backend (Railway)
+    // Llamada al Backend
     const responseText = await fetchFromBackend(text);
 
     // Resultado
@@ -50,29 +74,23 @@ async function handleSend() {
     if (responseText) {
         addMessage(responseText, 'ai');
     } else {
-        addMessage("Error de conexión con el servidor. Intenta más tarde.", 'ai', true);
+        addMessage("Error de conexión. Verifica que el servidor (puerto 5000) esté corriendo.", 'ai', true);
     }
 
     isProcessing = false;
     sendBtn.disabled = false;
+    // Auto-focus para seguir escribiendo
+    userInput.focus(); 
 }
 
 async function fetchFromBackend(prompt) {
     try {
-        // NOTA: La estructura del 'body' depende de cómo programaste tu backend en Railway.
-        // Opción A: Si tu backend espera solo el mensaje del usuario:
-        /*
-        const payload = { prompt: prompt };
-        */
-
-        // Opción B: Si tu backend actúa como proxy directo y espera el array de mensajes completo:
         const payload = {
+            // Ajusta esto según lo que espere tu servidor (OpenAI format o prompt simple)
             messages: [
-                { role: "system", content: "Eres Cipher IA, un asistente inteligente, directo y servicial. Respondes en español. No uses emojis excesivamente." },
+                { role: "system", content: "Eres Cipher IA, un asistente inteligente y útil." },
                 { role: "user", content: prompt }
             ],
-            // Si tu backend permite configurar modelo/temperatura, agrégalos aquí,
-            // si no, quítalos y deja que el backend los maneje.
             model: "llama-3.3-70b-versatile" 
         };
 
@@ -80,7 +98,6 @@ async function fetchFromBackend(prompt) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
-                // No enviamos Authorization aquí, eso lo hace el backend
             },
             body: JSON.stringify(payload)
         });
@@ -89,12 +106,11 @@ async function fetchFromBackend(prompt) {
 
         const data = await response.json();
         
-        // Ajusta esto según lo que devuelva tu backend.
-        // Ejemplo: data.content, data.reply, data.choices[0].message.content, etc.
+        // ADVERTENCIA: Verifica aquí la estructura exacta de tu respuesta JSON
         return data.content || data.reply || data.choices?.[0]?.message?.content || "";
 
     } catch (error) {
-        console.error("Error al conectar con Railway:", error);
+        console.error("Error al conectar con el Backend:", error);
         return null;
     }
 }
@@ -108,17 +124,29 @@ function addMessage(content, role, isError = false) {
     if (role === 'user') {
         row.innerHTML = `<div class="bubble user-bubble">${escapeHtml(content)}</div>`;
     } else {
-        // Logo fallback lógico
-        const imgTag = `<img src="cipheria.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4712/4712027.png'">`;
+        // Logo fallback
+        const imgTag = `<img src="cipheria.png" class="logo-avatar" onerror="this.style.display='none'">`;
         
         const htmlContent = isError 
             ? `<span style="color:#ef4444">${content}</span>` 
             : marked.parse(content);
 
         row.innerHTML = `
-            <div class="ai-avatar">${imgTag}</div>
+            <div class="ai-avatar">
+                ${imgTag}
+                <i class="fas fa-robot fallback-icon" style="display:none"></i>
+            </div>
             <div class="bubble ai-bubble markdown-body">${htmlContent}</div>
         `;
+        
+        // Manejo simple de imagen rota para mostrar ícono
+        const img = row.querySelector('.logo-avatar');
+        if(img) {
+            img.onerror = function() {
+                this.style.display = 'none';
+                row.querySelector('.fallback-icon').style.display = 'block';
+            }
+        }
     }
     chatContainer.appendChild(row);
     scrollToBottom();
@@ -130,7 +158,7 @@ function addLoading() {
     row.id = id;
     row.className = 'message-row ai-row';
     row.innerHTML = `
-        <div class="ai-avatar"><img src="cipheria.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4712/4712027.png'"></div>
+        <div class="ai-avatar"><i class="fas fa-robot"></i></div>
         <div class="bubble ai-bubble">
             <div class="typing-dots">
                 <div class="dot"></div><div class="dot"></div><div class="dot"></div>
@@ -167,13 +195,11 @@ window.copyToClipboard = function(btn) {
     });
 };
 
-// Ajuste automático de altura del textarea
 userInput.addEventListener('input', function() {
     this.style.height = 'auto';
     this.style.height = (this.scrollHeight) + 'px';
 });
 
-// Enviar con Enter (pero Shift+Enter hace salto de línea)
 userInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
@@ -182,15 +208,3 @@ userInput.addEventListener('keydown', (e) => {
 });
 
 sendBtn.addEventListener('click', handleSend);
-
-// Control de logo en header
-const logoImg = document.querySelector('.logo-img');
-const mainTitle = document.getElementById('main-title');
-if(logoImg) {
-    logoImg.onload = function() { mainTitle.style.display = 'none'; };
-    logoImg.onerror = function() { 
-        this.style.display = 'none'; 
-        document.getElementById('txt-logo').style.display = 'block';
-        mainTitle.style.display = 'none';
-    };
-}
