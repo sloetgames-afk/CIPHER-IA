@@ -1,7 +1,7 @@
 // --- CONFIGURACIÓN ---
 // Pega aquí la URL pública de tu servicio en Railway
 // Ejemplo: "https://mi-proyecto-cipher.up.railway.app/chat"
-const BACKEND_URL = "cipher-ia-production.up.railway.app"; 
+const BACKEND_URL = "https://cipher-ia-production.up.railway.app"; 
 
 const chatContainer = document.getElementById('chat-container');
 const userInput = document.getElementById('user-input');
