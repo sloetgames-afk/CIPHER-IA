@@ -4,7 +4,12 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+// Cambia esta línea en server.js
+const PORT = process.env.PORT || 5000; 
+
+app.listen(PORT, () => {
+    console.log(`Servidor Cipher corriendo en el puerto ${PORT}`);
+});
 
 // Middleware para procesar JSON y servir archivos estáticos (frontend)
 app.use(express.json());
