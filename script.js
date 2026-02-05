@@ -1,4 +1,8 @@
-let currentKeyIndex = 0;
+// --- CONFIGURACIÓN ---
+// Pega aquí la URL pública de tu servicio en Railway
+// Ejemplo: "https://mi-proyecto-cipher.up.railway.app/chat"
+const BACKEND_URL = "TU_URL_DE_RAILWAY_AQUI"; 
+
 const chatContainer = document.getElementById('chat-container');
 const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
@@ -38,56 +42,60 @@ async function handleSend() {
     const loadingId = addLoading();
     scrollToBottom();
 
-    // Llamada API
-    const responseText = await fetchWithRetry(text);
+    // Llamada a TU Backend (Railway)
+    const responseText = await fetchFromBackend(text);
 
     // Resultado
     removeMessage(loadingId);
     if (responseText) {
         addMessage(responseText, 'ai');
     } else {
-        addMessage("No se pudo conectar. Verifica tu internet o las claves API.", 'ai', true);
+        addMessage("Error de conexión con el servidor. Intenta más tarde.", 'ai', true);
     }
 
     isProcessing = false;
     sendBtn.disabled = false;
-    // Enfocar de nuevo en PC, opcional en móvil
-    // userInput.focus();
 }
 
-async function fetchWithRetry(prompt, attempt = 0) {
-    if (attempt >= apiKeys.length) return null; // Todas fallaron
-
-    const apiKey = apiKeys[currentKeyIndex];
-    
+async function fetchFromBackend(prompt) {
     try {
-        // Usamos el modelo "llama-3.3-70b-versatile" que es muy estable en Groq
-        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        // NOTA: La estructura del 'body' depende de cómo programaste tu backend en Railway.
+        // Opción A: Si tu backend espera solo el mensaje del usuario:
+        /*
+        const payload = { prompt: prompt };
+        */
+
+        // Opción B: Si tu backend actúa como proxy directo y espera el array de mensajes completo:
+        const payload = {
+            messages: [
+                { role: "system", content: "Eres Cipher IA, un asistente inteligente, directo y servicial. Respondes en español. No uses emojis excesivamente." },
+                { role: "user", content: prompt }
+            ],
+            // Si tu backend permite configurar modelo/temperatura, agrégalos aquí,
+            // si no, quítalos y deja que el backend los maneje.
+            model: "llama-3.3-70b-versatile" 
+        };
+
+        const response = await fetch(BACKEND_URL, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${apiKey}`
+                "Content-Type": "application/json"
+                // No enviamos Authorization aquí, eso lo hace el backend
             },
-            body: JSON.stringify({
-                messages: [
-                    { role: "system", content: "Eres Cipher IA, un asistente inteligente, directo y servicial. Respondes en español. No uses emojis excesivamente." },
-                    { role: "user", content: prompt }
-                ],
-                model: "llama-3.3-70b-versatile", 
-                temperature: 0.6,
-                max_tokens: 1024
-            })
+            body: JSON.stringify(payload)
         });
 
-        if (!response.ok) throw new Error(response.status);
+        if (!response.ok) throw new Error(`Server Error: ${response.status}`);
 
         const data = await response.json();
-        return data.choices[0]?.message?.content || "";
+        
+        // Ajusta esto según lo que devuelva tu backend.
+        // Ejemplo: data.content, data.reply, data.choices[0].message.content, etc.
+        return data.content || data.reply || data.choices?.[0]?.message?.content || "";
 
     } catch (error) {
-        console.warn(`Intento ${attempt + 1} fallido con Key ${currentKeyIndex}. Error: ${error.message}`);
-        currentKeyIndex = (currentKeyIndex + 1) % apiKeys.length; // Rotar clave
-        return await fetchWithRetry(prompt, attempt + 1); // Reintentar
+        console.error("Error al conectar con Railway:", error);
+        return null;
     }
 }
 
