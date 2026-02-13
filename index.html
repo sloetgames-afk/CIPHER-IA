@@ -3,35 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
-    <title>CIPHER IA</title>
+    <title>CIPHER IA - Professional Edition</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <div class="logo-container">
-            <img src="cipheria.png" alt="Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('txt-logo').style.display='block'">
-            <div id="txt-logo" class="logo-text" style="display:none">CIPHER IA</div>
-            <div class="logo-text" id="main-title">CIPHER IA</div>
-        </div>
-    </header>
+    <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-    <div id="chat-container">
-        </div>
-
-    <div class="input-area">
-        <div class="input-wrapper">
-            <textarea id="user-input" placeholder="Escribe un mensaje..." rows="1"></textarea>
-            <button id="send-btn">
-                <i class="fas fa-arrow-up"></i>
-            </button>
+    <div id="auth-view" class="view-section active">
+        <div class="auth-container">
+            <div style="background:#333; width:60px; height:60px; border-radius:18px; display:flex; align-items:center; justify-content:center; margin:0 auto 20px auto;">
+                <i class="fas fa-bolt" style="font-size:30px; color:var(--text-primary);"></i>
+            </div>
+           
+            <h1 style="margin-bottom: 10px; font-weight: 700; font-size: 28px;">Bienvenido</h1>
+            <p style="color: #888; margin-bottom: 30px; line-height: 1.5;">Inicia sesión para continuar con tu<br>asistente inteligente personal.</p>
+            
+            <div id="login-form">
+                <input type="email" id="login-email" class="auth-input" placeholder="Correo electrónico">
+                <input type="password" id="login-pass" class="auth-input" placeholder="Contraseña">
+  
+                <button class="auth-btn" onclick="loginUser()">Continuar</button>
+                <p style="margin-top:20px; color:#aaa; font-size:13px; cursor:pointer;" onclick="switchForm('register')">¿No tienes cuenta? <span style="color:var(--text-primary); font-weight:600;">Regístrate</span></p>
+            </div>
+            
+            <div id="register-form" style="display:none">
+                <input type="email" id="reg-email" class="auth-input" placeholder="Correo electrónico">
+                <input type="password" id="reg-pass" class="auth-input" placeholder="Contraseña (Min 6 caracteres)">
+          
+                <button class="auth-btn" onclick="registerUser()" style="background: var(--accent)">Crear Cuenta</button>
+                <p style="margin-top:20px; color:#aaa; font-size:13px; cursor:pointer;" onclick="switchForm('login')">Volver a Iniciar Sesión</p>
+            </div>
+            <div id="login-error" style="color: #ff5f57; margin-top: 15px; font-size: 13px;"></div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <div id="settings-view" class="view-section" style="background: rgba(0,0,0,0.85); align-items:center; justify-content:center; backdrop-filter: blur(8px);">
+        <div style="background: #252525; padding: 30px; border-radius: 16px; width: 90%; max-width: 450px; border: 1px solid #444; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+            <h2 style="margin-top:0; font-size: 20px;">Configuración de Perfil</h2>
+            <div style="margin: 20px 0;">
+                <label style="display:block; margin-bottom:8px; font-size:13px; color:#aaa;">Nombre de Usuario</label>
+                <input type="text" id="config-name" class="auth-input" placeholder="Ej. Alex Dev">
+            </div>
+            <div style="margin: 20px 0;">
+                <label style="display:block; margin-bottom:8px; font-size:13px; color:#aaa;">Descripción / Rol</label>
+                <input type="text" id="config-desc" class="auth-input" placeholder="Ej. Desarrollador Full Stack">
+            </div>
+            <div style="margin: 20px 0;">
+                <label style="display:block; margin-bottom:8px; font-size:13px; color:#aaa;">Personalidad IA</label>
+                <select id="config-tone" class="auth-input" style="cursor:pointer;">
+                    <option value="balanced">Equilibrado (Estándar)</option>
+                    <option value="programmer">💻 Programador Senior (God Mode)</option>
+                    <option value="friendly">😊 Amigable y Casual</option>
+                    <option value="serious">🧐 Analista Serio</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:10px; margin-top: 30px;">
+                <button class="auth-btn" onclick="saveSettingsAndExit()">Guardar Cambios</button>
+                <button class="auth-btn" style="background:transparent; border:1px solid #555; color: #ddd;" onclick="showView('app')">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-view" class="view-section">
+        <nav id="sidebar">
+            <button class="new-chat-btn" onclick="triggerNewChat()">
+                <i class="fas fa-plus"></i> Nuevo Chat
+            </button>
+          
+            <div class="sidebar-content" id="chat-history-list"></div>
+            
+            <div class="sidebar-footer">
+                <button class="user-menu-btn" onclick="openSettings()" title="Configuración">
+                    <div style="width: 36px; height: 36px; background: #5436da; border-radius: 8px; display:flex; align-items:center; justify-content:center; font-weight:bold; color:white; font-size: 16px;">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div style="text-align: left; overflow:hidden;">
+                        <div id="sidebar-name" style="font-weight: 500;">Usuario</div>
+                        <div id="sidebar-desc" style="font-size: 11px; color: #888;">Configuración</div>
+                    </div>
+                </button>
+                <button class="user-menu-btn" onclick="logoutUser()" style="color:#ff5f57; margin-top:5px; font-size: 13px;">
+                    <i class="fas fa-sign-out-alt"></i> 
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </nav>
+
+        <main id="main-area">
+         
+            <div class="mobile-header">
+                <button onclick="toggleSidebar()" style="background:none; border:none; color:white; font-size:18px; padding: 10px;"><i class="fas fa-bars"></i></button>
+                <span style="font-weight:600; font-size: 16px;">CIPHER</span>
+                <button onclick="triggerNewChat()" style="background:none; border:none; color:white; font-size:18px; padding: 10px;"><i class="fas fa-pen-to-square"></i></button>
+            </div>
+
+            <div id="chat-container"></div>
+
+            <div class="input-area-container">
+                <div id="file-preview-area">
+                    <div class="file-chip">
+                  
+                        <i class="fas fa-file-alt" style="color: #4facfe;"></i>
+                        <span id="file-name-display" style="font-size: 13px; color: #ddd; margin-left: 5px;">documento.txt</span>
+                        <i class="fas fa-times" onclick="clearFile()" style="cursor: pointer; color: #aaa; margin-left: 10px;"></i>
+                    </div>
+                </div>
+
+                <div class="input-box">
+                    <input type="file" id="file-upload" hidden accept=".txt,.html,.css,.js,.py,.json,.md,.csv" onchange="handleFileSelect(this)">
+                   
+                    <button class="circle-btn attach-btn" onclick="document.getElementById('file-upload').click()" title="Adjuntar Archivo">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    
+                    <textarea id="user-input" rows="1" placeholder="Escribe un mensaje..."></textarea>
+   
+                    <button id="send-btn" class="circle-btn send-btn-active">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+              
+                </div>
+                <div style="margin-top: 10px; font-size: 11px; color: #555; text-align: center;">Cipher puede cometer errores. Verifica la información.</div>
+            </div>
+        </main>
+    </div>
+
+    <div id="ctx-menu" class="context-menu">
+        <button onclick="renameChatAction()"><i class="fas fa-edit"></i> Editar nombre</button>
+        <button onclick="deleteChatAction()" class="delete"><i class="fas fa-trash"></i> Eliminar chat</button>
+    </div>
+
+    <script type="module" src="script.js"></script>
 </body>
 </html>
